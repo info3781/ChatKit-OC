@@ -45,7 +45,7 @@
     //通道数
     [settings setValue :[NSNumber numberWithInt:2] forKey: AVNumberOfChannelsKey];
     //音频质量,采样质量
-    [settings setValue:[NSNumber numberWithInt:AVAudioQualityMin] forKey:AVEncoderAudioQualityKey];
+    [settings setValue:[NSNumber numberWithInt:AVAudioQualityMedium] forKey:AVEncoderAudioQualityKey];
     _recorder = [[AVAudioRecorder alloc] initWithURL:url
                                             settings:settings
                                                error:&recorderSetupError];
@@ -81,6 +81,9 @@
 - (void)stopRecord
 {
     double cTime = _recorder.currentTime;
+    if (cTime < 1e-6) {
+        return;
+    }
     [_recorder stop];
     
     if (cTime > 1) {
